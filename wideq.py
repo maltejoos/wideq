@@ -14,8 +14,8 @@ GATEWAY_URL = 'https://kic.lgthinq.com:46030/api/common/gatewayUriList'
 APP_KEY = 'wideq'
 SECURITY_KEY = 'nuts_securitykey'
 DATA_ROOT = 'lgedmRoot'
-COUNTRY = 'KR'
-LANGUAGE = 'ko-KR'
+COUNTRY = 'DE'
+LANGUAGE = 'en-DE'
 SVC_CODE = 'SVC202'
 CLIENT_ID = 'LGAO221A02'
 OAUTH_SECRET_KEY = 'c053c2a6ddeb7ad97cb0eed0dcb31cf8'
@@ -1583,25 +1583,38 @@ class SMARTSAVING(enum.Enum):
     NIGHT = "@RE_SMARTSAVING_MODE_NIGHT_W"
     CUSTOM = "@RE_SMARTSAVING_MODE_CUSTOM_W"
 
+class ECOFRIENDLY(enum.Enum):
+    OFF = "@CP_OFF_EN_W"
+    ON = "@CP_ON_EN_W"
+
 class RefDevice(Device):
     
     def set_reftemp(self, temp):
         """Set the refrigerator temperature.
         """
-        temp_value = self.model.enum_value('TempRefrigerator_C', temp)
+        temp_value = self.model.enum_value('TempRefrigerator', temp)
         self._set_control('RETM', temp_value)
+
+    def set_refeco(self, is_on):
+        """Set the refrigerator eco mode.
+        """
+        op = ECOFRIENDLY.ON if is_on else ECOFRIENDLY.OFF
+
+        mode_value = self.model.enum_value('EcoFriendly', op.value)
+        self._set_control('REEF', mode_value)
     
     def set_freezertemp(self, temp):
         """Set the freezer temperature.
         """
-        temp_value = self.model.enum_value('TempFreezer_C', temp)
+        temp_value = self.model.enum_value('TempFreezer', temp)
         self._set_control('REFT', temp_value)
     
-    def set_iceplus(self, mode):
+    def set_iceplus(self, is_on):
         """Set the device's operating mode to an `iceplus` value.
         """
+        op = ICEPLUS.ON if is_on else ICEPLUS.OFF
         
-        iceplus_value = self.model.enum_value('IcePlus', mode.value)
+        iceplus_value = self.model.enum_value('IcePlus', op.value)
         self._set_control('REIP', iceplus_value)
     
     def set_freshairfilter(self, mode):

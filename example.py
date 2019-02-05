@@ -157,11 +157,28 @@ def turn(client, device_id, on_off):
     ac.set_on(on_off == 'on')
 
 def set_reftemp(client, device_id, temp):
-    """Set the configured temperature for an AC device."""
+    """Set the configured temperature for a refrigerator device."""
 
     ref = wideq.RefDevice(client, client.get_device(device_id))
     ref.set_reftemp(temp)
 
+def set_freezertemp(client, device_id, temp):
+    """Set the configured temperature for a refrigerator device."""
+
+    ref = wideq.RefDevice(client, client.get_device(device_id))
+    ref.set_freezertemp(temp)
+
+def set_refeco(client, device_id, on_off):
+    """Set the eco mode for a refrigerator device."""
+
+    ref = wideq.RefDevice(client, client.get_device(device_id))
+    ref.set_refeco(on_off == 'on')
+
+def set_iceplus(client, device_id, on_off):
+    """Set the eco mode for a refrigerator device."""
+
+    ref = wideq.RefDevice(client, client.get_device(device_id))
+    ref.set_iceplus(on_off == 'on')
 
 
 
@@ -201,6 +218,9 @@ EXAMPLE_COMMANDS = {
     'ac-mon': ac_mon,
     'set-temp': set_temp,
     'set-reftemp': set_reftemp,
+    'set-freezertemp': set_freezertemp,
+    'set-refeco': set_refeco,
+    'set-iceplus': set_iceplus,
     'turn': turn,
     'ac-config': ac_config,
     'wp-config': wp_config,
